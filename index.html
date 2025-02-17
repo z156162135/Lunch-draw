@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +13,12 @@
             background-color: #f4f4f9;
             margin: 0;
         }
+
         h1 {
             color: #333;
             margin-bottom: 20px;
         }
+
         ul {
             list-style-type: none;
             padding: 0;
@@ -24,8 +27,9 @@
             flex-wrap: wrap;
             justify-content: center;
         }
+
         li {
-	    width: 150px;
+            width: 150px;
             font-size: 14px;
             background-color: #fff;
             border: 1px solid #ddd;
@@ -35,44 +39,69 @@
             width: calc(33.333% - 20px);
             box-sizing: border-box;
             text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s, box-shadow 0.3s;
         }
-	#dishesList li {
-    width: 120px; /* 设置 li 元素的宽度 */
-    margin: 5px 0; /* 添加上下间距 */
-    padding: 10px; /* 添加内边距 */
-    border: 1px solid #ccc; /* 添加边框 */
-    border-radius: 4px; /* 圆角边框 */
-    text-align: center; /* 文本居中 */
-    transition: background-color 0.3s, box-shadow 0.3s; /* 添加过渡效果 */
-    display: inline-block; /* 使 li 元素在水平方向上排列 */
-}
 
-#dishesList li.active {
-    background-color: #b3e5fc; /* 更亮的高亮背景颜色 */
-}
+        #dishesList li {
+            width: 120px;
+            /* 设置 li 元素的宽度 */
+            margin: 5px 0;
+            /* 添加上下间距 */
+            padding: 10px;
+            /* 添加内边距 */
+            border: 1px solid #ccc;
+            /* 添加边框 */
+            border-radius: 4px;
+            /* 圆角边框 */
+            text-align: center;
+            /* 文本居中 */
+            transition: background-color 0.3s, box-shadow 0.3s;
+            /* 添加过渡效果 */
+            display: inline-block;
+            /* 使 li 元素在水平方向上排列 */
+        }
 
-#dishesList li.final {
-    background-color: #b3e5fc; /* 更亮的高亮背景颜色 */
-    box-shadow: 0 0 15px rgba(0, 150, 255, 0.7); /* 更强的阴影效果 */
-}
+        #dishesList li.active {
+            background-color: #b3e5fc;
+            /* 更亮的高亮背景颜色 */
+        }
+
+        #dishesList li.final {
+            background-color: #b3e5fc;
+            /* 更亮的高亮背景颜色 */
+            box-shadow: 0 0 15px rgba(0, 150, 255, 0.7);
+            /* 更强的阴影效果 */
+        }
+
         li.highlight {
             animation: highlight 0.3s;
         }
+
         @keyframes highlight {
-            0% { background-color: #f4f4f9; }
-            50% { background-color: #e1f5fe; }
-            100% { background-color: #f4f4f9; }
+            0% {
+                background-color: #f4f4f9;
+            }
+
+            50% {
+                background-color: #e1f5fe;
+            }
+
+            100% {
+                background-color: #f4f4f9;
+            }
         }
+
         li.active {
             background-color: #dff0d8;
             transition: background-color 0.3s;
         }
+
         li:hover {
             transform: scale(1.05);
-            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
+
         button {
             padding: 12px 25px;
             font-size: 18px;
@@ -84,10 +113,12 @@
             transition: background-color 0.3s, transform 0.3s;
             margin-top: 20px;
         }
+
         button:hover {
             background-color: #45a049;
             transform: scale(1.05);
         }
+
         #result {
             font-size: 24px;
             color: #333;
@@ -95,19 +126,22 @@
             font-weight: bold;
             padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        
+
         /* 媒体查询: 小屏幕设备优化 */
         @media (max-width: 600px) {
             li {
-                width: calc(50% - 20px); /* 每行两个 */
+                width: calc(50% - 20px);
+                /* 每行两个 */
                 font-size: 16px;
             }
+
             button {
                 padding: 10px 20px;
                 font-size: 16px;
             }
+
             #result {
                 font-size: 20px;
                 padding: 8px;
@@ -115,24 +149,31 @@
         }
     </style>
 </head>
+
 <body>
     <h1>今天吃什么？</h1>
     <ul id="dishesList">
         <!-- 菜品列表会自动填充 -->
     </ul>
     <button onclick="drawDish()">抽取菜品</button>
+    <button onclick="addDish()">添加菜品</button>
     <h2 id="result"></h2>
 
     <script>
-        const dishes = [
-            "dog meat",
-            "🐕",
-            "🐕🐕",
-            "🐕🐕🐕",
-            "🐕🐕🐕🐕",
-            "🐕🐕🐕🐕🐕"
-        ];
-
+        let dishes = [];
+        if (localStorage.getItem('dishes')) {
+            dishes = JSON.parse(localStorage.getItem('dishes'));
+        } else {
+            // 初始化菜品列表
+            dishes = [
+                "食堂",
+                "蒸菜",
+                "杀猪粉",
+                "方便面"
+            ]
+            // 存入localStorage
+            localStorage.setItem('dishes', JSON.stringify(dishes));
+        }
         let lastIndex = -1;
         let intervalId;
 
@@ -144,7 +185,17 @@
             li.setAttribute('data-index', index);
             dishesList.appendChild(li);
         });
-
+        function addDish() {
+            const newDish = prompt('请输入新的菜品名称:');
+            if (newDish) {
+                dishes.push(newDish);
+                const li = document.createElement('li');
+                li.textContent = newDish;
+                dishesList.appendChild(li);
+            }
+            // 存入localStorage
+            localStorage.setItem('dishes', JSON.stringify(dishes));
+        }
         function drawDish() {
             // 清除之前的高亮
             document.querySelectorAll('#dishesList li').forEach(item => {
